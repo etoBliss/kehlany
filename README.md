@@ -21,4 +21,6 @@ A warm editorial multi-page portfolio for Kehlany, built with React, TypeScript 
 
 ## Deployment
 
-Build with `npm run build`, then deploy the contents of `dist/` to any static host. Firebase Hosting can be added at deployment time if desired; this starter does not require Firebase credentials, Firestore, or an admin service.
+Run `npm run build` and deploy the contents of `dist/` to a static host. The Netlify fallback is copied from `public/_redirects`; `vercel.json` provides the equivalent route fallback for Vercel, so direct visits to pages such as `/about` continue to work.
+
+The site is configured for deployment at a domain root. Before launch, add the production domain to the social preview metadata if a canonical URL or absolute preview image is needed. Add the real dashboard, GitHub, and published writing URLs to `src/site/content.ts` when available.
