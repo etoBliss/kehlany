@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from 'react';
-import { ArrowDown, ArrowDownRight, ArrowLeft, ArrowRight, ArrowUpRight, Menu, X } from 'lucide-react';
+import { ArrowDownRight, ArrowLeft, ArrowRight, ArrowUpRight, Menu, X } from 'lucide-react';
 import { analyticsProjects, contentProjects, ecosystems, profile, skillGroups, writingCategories } from './content';
 
 const pages = [
@@ -23,7 +23,37 @@ function PageIntro({ title, children }: { title: ReactNode; children?: ReactNode
 }
 
 function Home() {
-  return <><section className="home-hero"><div className="hero-copy"><p className="hero-name">KEHLANY</p><h1>Words with wit.<br/><em>Data with depth.</em></h1><p className="hero-tagline">{profile.tagline}</p><p className="hero-role">CONTENT WRITER <span>×</span> ASPIRING DATA ANALYST</p><div className="hero-actions"><a className="button button-dark" href="/analytics">Explore my work <ArrowRight size={15}/></a><a className="quiet-link" href="/about">A little about me <ArrowDownRight size={15}/></a></div><a className="hero-scroll" href="#selected"><span>SCROLL TO EXPLORE</span><ArrowDown size={14}/></a></div><div className="hero-portrait"><img src="/hero_profile.jpeg" alt="Kehlany in a white blouse"/><span className="portrait-note">WORDS · DATA · CURIOSITY</span><span className="portrait-star" aria-hidden="true">✳</span><span className="portrait-scribble" aria-hidden="true">tell it<br/>with feeling</span></div><span className="hero-edge-note">MAKE MEANING MOVE</span><span className="hero-orbit-word" aria-hidden="true">signal / story / sense</span></section><section className="home-intro" id="selected"><p className="home-intro-text">I make complex things <em>feel clear.</em><br/>Then I look for what the details <em>can tell us.</em></p><a className="round-link" href="/about" aria-label="More about Kehlany"><ArrowDownRight size={20}/></a></section><section className="home-work"><div className="work-heading"><h2>A few good questions,<br/><em>followed through.</em></h2><a href="/analytics">All projects <ArrowRight size={13}/></a></div><div className="home-projects">{analyticsProjects.map(p=><a className="home-project" href="/analytics" key={p.number}><span className="project-number">{p.number}</span><span><small>{p.category}</small><b>{p.title}</b></span><ArrowUpRight size={16}/></a>)}</div><div className="home-note"><span>Words have work to do.</span><p>From Web3 communities to construction consultancy, I help ideas find their people.</p><a className="quiet-link" href="/writing">See what I write <ArrowRight size={14}/></a></div></section><section className="home-cta"><h2>Got a knotty question?<br/><em>Let’s make it make sense.</em></h2><a className="button button-cream" href="/contact">Start a conversation <ArrowUpRight size={15}/></a></section></>;
+  const featured = [
+    ...analyticsProjects.map(project => ({ ...project, destination: '/analytics', kind: 'Data story' })),
+    ...contentProjects.map(project => ({ ...project, destination: '/writing', kind: 'Words at work' })),
+  ];
+  const signalWords = ['STORYTELLING', 'DATA WITH PURPOSE', 'WEB3 & TECHNOLOGY', 'CLEAR THINKING'];
+  return <>
+    <section className="home-hero">
+      <div className="hero-copy">
+        <p className="hero-name">KEHLANY</p>
+        <h1>Words with wit.<br/><em>Data with depth.</em></h1>
+        <p className="hero-tagline">{profile.tagline}</p>
+        <p className="hero-role">CONTENT WRITER <span>×</span> ASPIRING DATA ANALYST</p>
+        <div className="hero-actions"><a className="button button-dark" href="/analytics">Explore my work <ArrowRight size={15}/></a><a className="quiet-link" href="/about">A little about me <ArrowDownRight size={15}/></a></div>
+      </div>
+      <div className="hero-portrait">
+        <img src="/hero_profile.jpeg" alt="Kehlany in a white blouse"/>
+        <svg className="portrait-signal" viewBox="0 0 300 110" fill="none" aria-hidden="true"><path d="M4 86C43 86 43 65 77 65S117 92 151 55s57-31 78-31 32 24 67 3"/><circle cx="77" cy="65" r="4"/><circle cx="151" cy="55" r="4"/><circle cx="229" cy="24" r="4"/></svg>
+        <span className="portrait-note">WORDS · DATA · CURIOSITY</span><span className="portrait-star" aria-hidden="true">✳</span>
+        <span className="portrait-scribble" aria-hidden="true">tell it<br/>with feeling</span>
+        <span className="portrait-caption">STORY → SIGNAL → SENSE</span>
+      </div>
+      <span className="hero-edge-note">MAKE MEANING MOVE</span><span className="hero-orbit-word" aria-hidden="true">signal / story / sense</span>
+    </section>
+    <section className="home-intro" id="selected"><p className="home-intro-text">I make complex things <em>feel clear.</em><br/>Then I look for what the details <em>can tell us.</em></p><a className="round-link" href="/about" aria-label="More about Kehlany"><ArrowDownRight size={20}/></a></section>
+    <div className="home-signal-strip" aria-label="Storytelling, data with purpose, Web3 and technology, clear thinking"><div className="home-signal-track">{[...signalWords, ...signalWords].map((word, index) => <span key={`${word}-${index}`}>{word}<i>✳</i></span>)}</div></div>
+    <section className="home-work"><div className="work-heading"><h2>A few good questions,<br/><em>followed through.</em></h2><a href="/analytics">All projects <ArrowRight size={13}/></a></div>
+      <div className="home-projects">{featured.map(project=><a className="home-project" href={project.destination} key={project.number}><span className="project-number">{project.number}</span><span className="home-project-copy"><small>{project.kind} · {project.category}</small><b>{project.title}</b></span><span className="home-project-arrow"><ArrowUpRight size={16}/></span></a>)}</div>
+      <div className="home-note"><span>Words have work to do.</span><p>From Web3 communities to construction consultancy, I help ideas find their people.</p><a className="quiet-link" href="/writing">See what I write <ArrowRight size={14}/></a></div>
+    </section>
+    <section className="home-cta"><h2>Got a knotty question?<br/><em>Let’s make it make sense.</em></h2><a className="button button-cream" href="/contact">Start a conversation <ArrowUpRight size={15}/></a></section>
+  </>;
 }
 
 function About() {
@@ -56,8 +86,34 @@ export default function App() {
   const [page, setPage] = useState(currentPage);
   useEffect(() => { const update = () => setPage(currentPage()); window.addEventListener('popstate', update); return () => window.removeEventListener('popstate', update); }, []);
   useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !window.matchMedia('(pointer: fine)').matches) return;
+    const selectors = ['.hero-portrait', '.project-graphic'];
+    const cleanups: Array<() => void> = [];
+    document.querySelectorAll<HTMLElement>(selectors.join(',')).forEach(element => {
+      let frame = 0;
+      const move = (event: PointerEvent) => {
+        const rect = element.getBoundingClientRect();
+        const x = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
+        const y = ((event.clientY - rect.top) / rect.height - 0.5) * 2;
+        cancelAnimationFrame(frame);
+        frame = requestAnimationFrame(() => {
+          element.style.setProperty('--pointer-x', `${x.toFixed(2)}`);
+          element.style.setProperty('--pointer-y', `${y.toFixed(2)}`);
+        });
+      };
+      const leave = () => {
+        element.style.setProperty('--pointer-x', '0');
+        element.style.setProperty('--pointer-y', '0');
+      };
+      element.addEventListener('pointermove', move);
+      element.addEventListener('pointerleave', leave);
+      cleanups.push(() => { cancelAnimationFrame(frame); element.removeEventListener('pointermove', move); element.removeEventListener('pointerleave', leave); });
+    });
+    return () => cleanups.forEach(cleanup => cleanup());
+  }, [page]);
+  useEffect(() => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const targets = document.querySelectorAll<HTMLElement>('.home-hero .hero-copy > *, .hero-portrait, .home-intro, .home-work > *, .home-cta, .page-intro > *, .about-profile > *, .skill-card, .analytics-card, .writing-feature > *, .content-work-card, .writing-list > div, .experience-item, .ecosystem-tags > span, .contact-panel > *');
+    const targets = document.querySelectorAll<HTMLElement>('.home-hero .hero-copy > *, .hero-portrait, .home-intro, .home-signal-strip, .home-work > *, .home-project, .home-cta, .page-intro > *, .about-profile > *, .skill-card, .analytics-card, .writing-feature > *, .content-work-card, .writing-list > div, .experience-item, .ecosystem-tags > span, .contact-panel > *');
     targets.forEach((item, index) => {
       item.classList.add('scroll-reveal');
       item.style.setProperty('--reveal-delay', `${Math.min(index % 5, 4) * 75}ms`);
